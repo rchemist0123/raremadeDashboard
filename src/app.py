@@ -1,8 +1,15 @@
 from dash import Dash, dcc, html, Input, Output, State, callback, dash_table
 from dash.dash_table.Format import Format, Group
+from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 from datetime import date
 import sqlite3
+
+external_script = ["https://tailwindcss.com/", {"src": "https://cdn.tailwindcss.com"}]
+app = Dash(__name__, external_scripts = external_script)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///raremade.db'
+server = app.server
+app.scripts.config.serve_locally = True
 
 columns_daily = [
     dict(id="dates", name="일자"),
@@ -48,11 +55,7 @@ def fetch_daily_data():
             """, conn)
     conn.close()
     return data
-    
-external_script = ["https://tailwindcss.com/", {"src": "https://cdn.tailwindcss.com"}]
-app = Dash(__name__, external_scripts = external_script)
-server = app.server
-app.scripts.config.serve_locally = True
+
 
 app.layout = html.Div([
     html.H1(className = 'text-4xl text-center font-bold', children = 'Raremade Management Application'),
