@@ -1,13 +1,12 @@
 from dash import Dash, dcc, html, Input, Output, State, callback, dash_table
 from dash.dash_table.Format import Format, Group
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 from datetime import date
 import sqlite3
 
 external_script = ["https://tailwindcss.com/", {"src": "https://cdn.tailwindcss.com"}]
 app = Dash(__name__, external_scripts = external_script)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///raremade.db'
 server = app.server
 app.scripts.config.serve_locally = True
 
