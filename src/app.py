@@ -27,7 +27,7 @@ columns_total = [
 ]
 
 def fetch_all_data():
-    conn = sqlite3.connect(database='src/raremade.db')
+    conn = sqlite3.connect(database='raremade.db')
     data = pd.read_sql_query("""
                             SELECT dates, category1, category2, category3, price, unit, 
                              case when unit = '위안' then price * 180 else price end as price_final
@@ -37,7 +37,7 @@ def fetch_all_data():
     return data
 
 def fetch_daily_data():
-    conn = sqlite3.connect(database='src/raremade.db')
+    conn = sqlite3.connect(database='raremade.db')
     data = pd.read_sql_query("""
                 SELECT
                     dates,
