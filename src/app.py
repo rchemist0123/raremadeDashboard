@@ -1,6 +1,5 @@
 from dash import Dash, dcc, html, Input, Output, State, callback, dash_table
 from dash.dash_table.Format import Format, Group
-# from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 from datetime import date
 import sqlite3
@@ -28,7 +27,7 @@ columns_total = [
 ]
 
 def fetch_all_data():
-    conn = sqlite3.connect('raremade.db')
+    conn = sqlite3.connect(database='src/raremade.db')
     data = pd.read_sql_query("""
                             SELECT dates, category1, category2, category3, price, unit, 
                              case when unit = '위안' then price * 180 else price end as price_final
@@ -38,7 +37,7 @@ def fetch_all_data():
     return data
 
 def fetch_daily_data():
-    conn = sqlite3.connect('raremade.db')
+    conn = sqlite3.connect(database='src/raremade.db')
     data = pd.read_sql_query("""
                 SELECT
                     dates,
@@ -60,7 +59,7 @@ app.layout = html.Div([
     html.H1(className = 'text-4xl text-center font-bold', children = 'Raremade Management Application'),
     html.Div([
         html.Div([
-            html.A("회계장부 입력", className='text-2xl text-left'),
+            html.P("회계장부 입력", className='text-2xl text-left w-36'),
             html.Form([
                 html.Label(children="일자"),
                 dcc.DatePickerSingle(
@@ -72,10 +71,10 @@ app.layout = html.Div([
                 html.Br(),
                 html.Div([
                     html.Label('구분'),
-                    dcc.Dropdown(['수입','지출'], id="category1",  style = {'width':'50%'}),
+                    dcc.Dropdown(['수입','지출'], id="category1", className = "w-72"),
                     html.Br(),
                     html.Label('항목'),
-                    dcc.Dropdown(id="category2",  style = {'width':'50%'}, className = ""),
+                    dcc.Dropdown(id="category2", className = "w-72"),
                     html.Br(),
                     html.Label('세부항목'),
                     dcc.Input(id="category3",  type="text", placeholder="세부항목", className = "block border rounded-xl px-4 py-2 w-72"),
@@ -93,7 +92,7 @@ app.layout = html.Div([
                 html.Br(),
                 html.Button('저장', id="submit", n_clicks=0, className="text-lg font-bold px-4 py-2 border rounded-xl "),
             ], ),
-        ], className= "flex flex-col border px-36 py-5 mx-36"),
+        ], className= "flex flex-col"),
         
     ], className = "p-5 flex flex-col justify-center"),
     html.Div([
@@ -113,6 +112,12 @@ app.layout = html.Div([
                     'backgroundColor': '#E8E8E8',
                 }
             ],
+            style_table={'overflowX': 'auto'},
+            style_cell = {
+                'height': 'auto',
+                'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
+                'whiteSpace': 'normal'
+            },
             style_header = {'backgroundColor': '#E2E2E2',
                             'color': 'black', 'fontWeight': 'bold', 'textAlign': 'center'})
     ], className = "p-5"),
